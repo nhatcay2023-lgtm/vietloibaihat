@@ -1,0 +1,6 @@
+{
+  "name": "AI Songwriter Studio",
+  "description": "Hệ thống sáng tác nhạc thông minh với 21 Creative Controls, Story Analysis, Song Blueprint, Meaning Layer, Style DNA và Production Guide.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
