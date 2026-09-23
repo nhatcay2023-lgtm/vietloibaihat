@@ -19,7 +19,7 @@ import {
   Dna,
   BookOpen,
 } from 'lucide-react';
-import { THEMES } from './data/themes';
+import { THEMES, applyAppTheme } from './data/themes';
 import { DEFAULT_CONTROLS } from './data/controlsData';
 import {
   Project,
@@ -107,18 +107,7 @@ export default function App() {
 
   // Apply Theme & Font dynamically
   useEffect(() => {
-    const currentTheme = THEMES.find((t) => t.id === settings.themeId || t.id === settings.theme) || THEMES[0];
-    const root = document.documentElement;
-    const font = settings.fontFamily || settings.uiFont || 'Be Vietnam Pro';
-
-    Object.entries(currentTheme.colors).forEach(([key, val]) => {
-      root.style.setProperty(`--color-${key}`, val);
-    });
-
-    root.style.setProperty('--font-primary', font);
-    document.body.style.fontFamily = font;
-    document.body.style.backgroundColor = currentTheme.colors.background;
-    document.body.style.color = currentTheme.colors.text;
+    applyAppTheme(settings.themeId || settings.theme, settings.fontFamily || settings.uiFont);
   }, [settings.themeId, settings.theme, settings.fontFamily, settings.uiFont]);
 
 
@@ -374,7 +363,7 @@ export default function App() {
                     }`}
                     style={{
                       backgroundColor: studioMode === 'advanced' ? 'var(--color-accent)' : 'transparent',
-                      color: studioMode === 'advanced' ? '#ffffff' : 'var(--color-text)',
+                      color: studioMode === 'advanced' ? 'var(--color-accent-contrast, #ffffff)' : 'var(--color-text)',
                     }}
                   >
                     21 Controls Studio (Chuyên Sâu)
@@ -388,7 +377,7 @@ export default function App() {
                     }`}
                     style={{
                       backgroundColor: studioMode === 'basic' ? 'var(--color-accent)' : 'transparent',
-                      color: studioMode === 'basic' ? '#ffffff' : 'var(--color-text)',
+                      color: studioMode === 'basic' ? 'var(--color-accent-contrast, #ffffff)' : 'var(--color-text)',
                     }}
                   >
                     Basic Studio (Rút Gọn 6 Mục)
@@ -444,7 +433,7 @@ export default function App() {
                   className="px-8 py-4 rounded-2xl text-sm md:text-base font-extrabold shadow-2xl inline-flex items-center space-x-3 transition-all transform hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   style={{
                     backgroundColor: 'var(--color-accent)',
-                    color: '#ffffff',
+                    color: 'var(--color-accent-contrast, #ffffff)',
                   }}
                 >
                   <Wand2 className={`w-5 h-5 ${isGeneratingSong ? 'animate-spin' : ''}`} />
@@ -591,13 +580,21 @@ export default function App() {
                 const updated = { ...settings, ...newVals };
                 setSettings(updated);
                 StorageService.saveSettings(updated);
+                if (newVals.themeId || newVals.theme || newVals.fontFamily || newVals.uiFont) {
+                  applyAppTheme(
+                    newVals.themeId || newVals.theme || updated.themeId || updated.theme,
+                    newVals.fontFamily || newVals.uiFont || updated.fontFamily || updated.uiFont
+                  );
+                }
               }}
               onResetDefaults={() => {
                 const def = {
                   customApiKey: '',
                   geminiModel: 'gemini-3.8-flash',
-                  themeId: 'studio-dark',
-                  fontFamily: 'Be Vietnam Pro',
+                  themeId: 'midnight-studio',
+                  theme: 'midnight-studio',
+                  fontFamily: 'Inter',
+                  uiFont: 'Inter',
                   temperature: 0.7,
                   poeticDensity: 4,
                   naturalPhrasing: 4,
@@ -606,6 +603,7 @@ export default function App() {
                 };
                 setSettings(def);
                 StorageService.saveSettings(def);
+                applyAppTheme('midnight-studio', 'Inter');
               }}
             />
           )}

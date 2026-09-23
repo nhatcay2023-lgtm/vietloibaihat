@@ -387,7 +387,10 @@ export const SongIdeasExplorer: React.FC<SongIdeasExplorerProps> = ({
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>Kịch Bản Chi Tiết (15 Dòng Miêu Tả Sơ Lược & Phong Cách)</span>
                 </h4>
-                <div className="space-y-1.5 pt-1 text-gray-200 whitespace-pre-line font-mono text-[11px] md:text-xs leading-relaxed">
+                <div
+                  className="space-y-1.5 pt-1 whitespace-pre-line font-mono text-[11px] md:text-xs leading-relaxed"
+                  style={{ color: 'var(--color-text)' }}
+                >
                   {activeIdeaForModal.detailedDescription}
                 </div>
               </div>
@@ -395,11 +398,11 @@ export const SongIdeasExplorer: React.FC<SongIdeasExplorerProps> = ({
               {/* Technical quick spec */}
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-3 rounded-xl border" style={{ backgroundColor: 'var(--color-secondary-surface)', borderColor: 'var(--color-border)' }}>
-                  <span className="font-bold text-gray-400 block mb-1">Cảm Xúc Chủ Đạo:</span>
+                  <span className="font-bold block mb-1" style={{ color: 'var(--color-muted-text)' }}>Cảm Xúc Chủ Đạo:</span>
                   <span style={{ color: 'var(--color-text)' }}>{activeIdeaForModal.mood}</span>
                 </div>
                 <div className="p-3 rounded-xl border" style={{ backgroundColor: 'var(--color-secondary-surface)', borderColor: 'var(--color-border)' }}>
-                  <span className="font-bold text-gray-400 block mb-1">Vocal & Cách Nhả Chữ:</span>
+                  <span className="font-bold block mb-1" style={{ color: 'var(--color-muted-text)' }}>Vocal & Cách Nhả Chữ:</span>
                   <span style={{ color: 'var(--color-text)' }}>{activeIdeaForModal.vocal}</span>
                 </div>
               </div>

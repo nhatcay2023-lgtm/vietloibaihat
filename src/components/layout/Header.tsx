@@ -58,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-105"
             style={{
               backgroundColor: 'var(--color-accent)',
-              color: '#ffffff',
+              color: 'var(--color-accent-contrast, #ffffff)',
             }}
           >
             <Music2 className="w-5 h-5 animate-pulse" />
@@ -151,7 +151,7 @@ export const Header: React.FC<HeaderProps> = ({
           className="p-2 rounded-lg border transition-colors"
           style={{
             backgroundColor: currentPage === 'help' ? 'var(--color-accent)' : 'var(--color-surface)',
-            color: currentPage === 'help' ? '#ffffff' : 'var(--color-text)',
+            color: currentPage === 'help' ? 'var(--color-accent-contrast, #ffffff)' : 'var(--color-text)',
             borderColor: 'var(--color-border)',
           }}
           title="Hướng dẫn sử dụng (22 chủ đề)"
@@ -166,7 +166,7 @@ export const Header: React.FC<HeaderProps> = ({
           className="p-2 rounded-lg border transition-colors"
           style={{
             backgroundColor: currentPage === 'settings' ? 'var(--color-accent)' : 'var(--color-surface)',
-            color: currentPage === 'settings' ? '#ffffff' : 'var(--color-text)',
+            color: currentPage === 'settings' ? 'var(--color-accent-contrast, #ffffff)' : 'var(--color-text)',
             borderColor: 'var(--color-border)',
           }}
           title="Cài đặt Theme, Font, Gemini API"

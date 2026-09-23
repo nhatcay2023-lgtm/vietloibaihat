@@ -114,19 +114,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
               id={`nav-${item.id}`}
               onClick={() => onNavigate(item.id)}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all group ${
-                isActive ? 'shadow-sm' : 'hover:opacity-80'
+                isActive ? 'shadow-sm font-bold' : 'hover:opacity-80'
               }`}
               style={{
                 backgroundColor: isActive ? 'var(--color-accent)' : 'transparent',
-                color: isActive ? '#ffffff' : 'var(--color-text)',
+                color: isActive ? 'var(--color-accent-contrast, #ffffff)' : 'var(--color-text)',
               }}
             >
               <div className="flex items-center space-x-3">
                 <Icon
-                  className={`w-4 h-4 transition-transform group-hover:scale-110 ${
-                    isActive ? 'text-white' : ''
-                  }`}
-                  style={{ color: isActive ? '#ffffff' : 'var(--color-accent)' }}
+                  className="w-4 h-4 transition-transform group-hover:scale-110"
+                  style={{ color: isActive ? 'var(--color-accent-contrast, #ffffff)' : 'var(--color-accent)' }}
                 />
                 <span>{item.label}</span>
               </div>
@@ -136,9 +134,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
                   style={{
                     backgroundColor: isActive
-                      ? 'rgba(255, 255, 255, 0.25)'
+                      ? 'rgba(0, 0, 0, 0.2)'
                       : 'var(--color-tag-bg)',
-                    color: isActive ? '#ffffff' : 'var(--color-tag-text)',
+                    color: isActive ? 'var(--color-accent-contrast, #ffffff)' : 'var(--color-tag-text)',
                   }}
                 >
                   {item.badge}

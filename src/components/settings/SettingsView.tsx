@@ -19,7 +19,7 @@ import {
   Loader2,
   ShieldCheck,
 } from 'lucide-react';
-import { THEMES, FONTS } from '../../data/themes';
+import { THEMES, FONTS, applyAppTheme } from '../../data/themes';
 import { UserSettings } from '../../types';
 import { GeminiService } from '../../services/geminiService';
 
@@ -227,24 +227,36 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           borderColor: 'var(--color-border)',
         }}
       >
-        <div className="flex items-center space-x-2 border-b pb-3" style={{ borderColor: 'var(--color-border)' }}>
-          <Palette className="w-4 h-4 text-amber-400" />
-          <h3 className="text-sm font-bold tracking-tight" style={{ color: 'var(--color-text)' }}>
-            GIAO DIỆN & MÀU SẮC (10 THEMES)
-          </h3>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3" style={{ borderColor: 'var(--color-border)' }}>
+          <div className="flex items-center space-x-2">
+            <Palette className="w-4 h-4 text-amber-400" />
+            <h3 className="text-sm font-bold tracking-tight" style={{ color: 'var(--color-text)' }}>
+              GIAO DIỆN & MÀU SẮC (10 THEMES)
+            </h3>
+          </div>
+          <span className="text-xs" style={{ color: 'var(--color-muted-text)' }}>
+            Chọn để thay đổi toàn bộ màu sắc, thanh bên, tiêu đề và phân đoạn ca khúc
+          </span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {THEMES.map((th) => {
-            const isSelected = settings.themeId === th.id;
+            const activeThemeId = settings.themeId || settings.theme || 'midnight-studio';
+            const isSelected = activeThemeId === th.id;
 
             return (
               <button
                 key={th.id}
+                id={`theme-btn-${th.id}`}
                 type="button"
-                onClick={() => onUpdateSettings({ themeId: th.id })}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer space-y-2 ${
-                  isSelected ? 'ring-2 ring-amber-500 shadow-md scale-105' : 'hover:opacity-90'
+                onClick={() => {
+                  applyAppTheme(th.id, settings.fontFamily || settings.uiFont);
+                  onUpdateSettings({ themeId: th.id, theme: th.id });
+                }}
+                className={`p-3 rounded-xl border text-left transition-all cursor-pointer space-y-2 relative overflow-hidden group ${
+                  isSelected
+                    ? 'ring-2 ring-amber-500 shadow-lg scale-105'
+                    : 'hover:scale-102 hover:shadow-md opacity-90 hover:opacity-100'
                 }`}
                 style={{
                   backgroundColor: th.previewBg,
@@ -252,14 +264,43 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 }}
               >
                 <div className="flex items-center justify-between">
-                  <div
-                    className="w-4 h-4 rounded-full border shadow-sm"
-                    style={{ backgroundColor: th.previewAccent, borderColor: 'rgba(255,255,255,0.3)' }}
-                  />
-                  {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />}
+                  <div className="flex items-center space-x-1.5">
+                    <div
+                      className="w-4 h-4 rounded-full border shadow-sm"
+                      style={{ backgroundColor: th.previewAccent, borderColor: 'rgba(255,255,255,0.4)' }}
+                    />
+                    <span
+                      className="text-[9px] uppercase font-extrabold px-1.5 py-0.2 rounded"
+                      style={{
+                        backgroundColor: th.category === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+                        color: th.previewText,
+                      }}
+                    >
+                      {th.category === 'dark' ? 'Dark' : 'Light'}
+                    </span>
+                  </div>
+
+                  {isSelected && (
+                    <div className="flex items-center space-x-1 text-amber-400">
+                      <CheckCircle2 className="w-3.5 h-3.5 fill-amber-400 text-black" />
+                    </div>
+                  )}
                 </div>
-                <div className="text-xs font-bold truncate" style={{ color: th.previewText }}>
-                  {th.name}
+
+                <div>
+                  <div className="text-xs font-bold truncate" style={{ color: th.previewText }}>
+                    {th.nameVi}
+                  </div>
+                  <div className="text-[10px] opacity-75 truncate" style={{ color: th.previewText }}>
+                    {th.name}
+                  </div>
+                </div>
+
+                {/* Color swatches preview bar */}
+                <div className="flex items-center space-x-1 pt-1 opacity-70">
+                  <div className="h-1.5 w-full rounded-full" style={{ backgroundColor: th.colors.surface }} />
+                  <div className="h-1.5 w-full rounded-full" style={{ backgroundColor: th.colors.secondarySurface }} />
+                  <div className="h-1.5 w-full rounded-full" style={{ backgroundColor: th.colors.accent }} />
                 </div>
               </button>
             );
@@ -276,24 +317,34 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           borderColor: 'var(--color-border)',
         }}
       >
-        <div className="flex items-center space-x-2 border-b pb-3" style={{ borderColor: 'var(--color-border)' }}>
-          <Type className="w-4 h-4 text-amber-400" />
-          <h3 className="text-sm font-bold tracking-tight" style={{ color: 'var(--color-text)' }}>
-            FONT CHỮ HIỂN THỊ (10 GOOGLE FONTS)
-          </h3>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3" style={{ borderColor: 'var(--color-border)' }}>
+          <div className="flex items-center space-x-2">
+            <Type className="w-4 h-4 text-amber-400" />
+            <h3 className="text-sm font-bold tracking-tight" style={{ color: 'var(--color-text)' }}>
+              FONT CHỮ HIỂN THỊ (10 GOOGLE FONTS)
+            </h3>
+          </div>
+          <span className="text-xs" style={{ color: 'var(--color-muted-text)' }}>
+            Áp dụng tức thì cho giao diện và bản in ca từ
+          </span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {FONTS.map((font) => {
-            const isSelected = settings.fontFamily === font.family;
+            const activeFont = settings.fontFamily || settings.uiFont || 'Inter';
+            const isSelected = activeFont === font.family || activeFont === font.id;
 
             return (
               <button
                 key={font.id}
+                id={`font-btn-${font.id}`}
                 type="button"
-                onClick={() => onUpdateSettings({ fontFamily: font.family })}
+                onClick={() => {
+                  applyAppTheme(settings.themeId || settings.theme, font.family);
+                  onUpdateSettings({ fontFamily: font.family, uiFont: font.family });
+                }}
                 className={`p-3 rounded-xl border text-left transition-all cursor-pointer space-y-1 ${
-                  isSelected ? 'ring-2 ring-amber-500 shadow-md' : 'hover:opacity-90'
+                  isSelected ? 'ring-2 ring-amber-500 shadow-md scale-105' : 'hover:opacity-90'
                 }`}
                 style={{
                   backgroundColor: 'var(--color-secondary-surface)',
@@ -302,10 +353,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 }}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold" style={{ color: 'var(--color-text)' }}>
+                  <span className="text-xs font-bold truncate" style={{ color: 'var(--color-text)' }}>
                     {font.name}
                   </span>
-                  {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />}
+                  {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 shrink-0 ml-1" />}
                 </div>
                 <p className="text-[11px] truncate opacity-70" style={{ color: 'var(--color-muted-text)' }}>
                   Giai điệu ca từ thi vị

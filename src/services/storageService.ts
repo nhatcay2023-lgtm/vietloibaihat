@@ -27,7 +27,9 @@ const STORAGE_KEYS = {
 const DEFAULT_SETTINGS: UserSettings = {
   id: 'default',
   theme: 'midnight-studio',
+  themeId: 'midnight-studio',
   uiFont: 'Inter',
+  fontFamily: 'Inter',
   lyricFont: 'Merriweather',
   editorFont: 'Roboto',
   aiCreativeFreedom: 'Medium',
@@ -141,7 +143,18 @@ export const StorageService = {
   getSettings(): UserSettings {
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-      return stored ? { ...DEFAULT_SETTINGS, ...JSON.parse(stored) } : DEFAULT_SETTINGS;
+      if (!stored) return DEFAULT_SETTINGS;
+      const parsed = JSON.parse(stored);
+      const themeId = parsed.themeId || parsed.theme || DEFAULT_SETTINGS.themeId;
+      const fontFamily = parsed.fontFamily || parsed.uiFont || DEFAULT_SETTINGS.fontFamily;
+      return {
+        ...DEFAULT_SETTINGS,
+        ...parsed,
+        themeId,
+        theme: themeId,
+        fontFamily,
+        uiFont: fontFamily,
+      };
     } catch {
       return DEFAULT_SETTINGS;
     }

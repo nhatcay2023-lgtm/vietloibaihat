@@ -1,1 +1,63 @@
 @import "tailwindcss";
+
+:root {
+  --color-background: #0d1117;
+  --color-surface: #161b22;
+  --color-secondary-surface: #21262d;
+  --color-secondarySurface: #21262d;
+  --color-text: #f0f6fc;
+  --color-muted-text: #8b949e;
+  --color-mutedText: #8b949e;
+  --color-accent: #f59e0b;
+  --color-accent-hover: #d97706;
+  --color-accentHover: #d97706;
+  --color-accent-contrast: #000000;
+  --color-accentContrast: #000000;
+  --color-border: #30363d;
+  --color-card-bg: #161b22;
+  --color-cardBg: #161b22;
+  --color-tag-bg: #21262d;
+  --color-tagBg: #21262d;
+  --color-tag-text: #f59e0b;
+  --color-tagText: #f59e0b;
+  --font-primary: 'Inter', sans-serif;
+  color-scheme: dark;
+}
+
+html,
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-primary);
+  min-height: 100vh;
+}
+
+/* Smooth background and text color transition when switching themes */
+body,
+#app-root,
+#app-header,
+#app-sidebar,
+main,
+aside,
+header {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.15s ease;
+}
+
+/* Custom scrollbars that adapt to theme border/surface */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-text);
+}
